@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spider-Yeefercito</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- La telaraña se dibuja con JavaScript dentro de este símbolo -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="web" viewBox="0 0 200 200"></symbol>
+  </svg>
+
+  <div id="telas-fondo"></div>
+  <div id="aranas"></div>
+
+  <main class="vineta">
+    <span class="hilo" aria-hidden="true"></span>
+    <h1 id="titulo-principal">Spider-Yeefercito</h1>
+    <p class="sub">De Luanita para su héroe favorito 🕷️❤️</p>
+
+    <div class="botones">
+      <button class="btn" id="btn-siempre" type="button">Porque siempre te amaré</button>
+      <button class="btn azul" id="btn-razon" type="button">Una razón para amarte</button>
+      <button class="btn negro" id="btn-terminar" type="button">Terminar esta relación</button>
+    </div>
+  </main>
+
+  <!-- Panel de mensajes -->
+  <section class="panel" id="panel" role="dialog" aria-live="polite">
+    <div id="telas-panel"></div>
+    <svg class="tela-centro" id="tela-centro" viewBox="0 0 400 400" aria-hidden="true"></svg>
+    <div class="corazones" id="corazones" aria-hidden="true"></div>
+
+    <div class="mensaje">
+      <h2 id="titulo"></h2>
+      <p id="texto"></p>
+      <button class="btn" id="cerrar" type="button">Volver</button>
+    </div>
+  </section>
+
+  <!-- Alarma roja (se ve al intentar terminar) -->
+  <div class="alarma" id="alarma" aria-live="assertive">
+    <p id="alarma-texto"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

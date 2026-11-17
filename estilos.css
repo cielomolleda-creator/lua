@@ -1,0 +1,342 @@
+/* ===== Colores de Spiderman ===== */
+:root {
+  --rojo: #e23636;
+  --rojo-oscuro: #9b1c1c;
+  --azul: #2b3784;
+  --azul-oscuro: #141a4a;
+  --blanco: #ffffff;
+  --negro: #0a0a12;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: Impact, "Arial Black", "Arial Narrow", sans-serif;
+  letter-spacing: 1px;
+  color: var(--blanco);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+  /* fondo de cómic: puntos tipo trama sobre rojo y azul */
+  background:
+    radial-gradient(circle, rgba(0,0,0,.28) 22%, transparent 24%) 0 0 / 14px 14px,
+    linear-gradient(135deg, var(--rojo) 0 50%, var(--azul) 50% 100%);
+}
+
+/* ===== Telarañas (se dibujan solas y se mecen) ===== */
+.web, .tela-centro {
+  fill: none;
+  stroke: rgba(255,255,255,.88);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;          /* cada hilo mide 1 (pathLength) y se "teje" */
+  pointer-events: none;
+}
+
+.web {
+  position: fixed;
+  width: min(44vw, 280px);
+  height: min(44vw, 280px);
+  animation: tejer 2.4s ease-out both, mecer 6s ease-in-out 2.4s infinite alternate;
+}
+.web.sup-izq { top: 0;    left: 0;  transform-origin: 0 0; }
+.web.sup-der { top: 0;    right: 0; transform-origin: 100% 0; }
+.web.inf-izq { bottom: 0; left: 0;  transform-origin: 0 100%; }
+.web.inf-der { bottom: 0; right: 0; transform-origin: 100% 100%; }
+
+@keyframes tejer {
+  from { stroke-dashoffset: 1; opacity: .3; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes mecer {
+  from { rotate: -1.8deg; }
+  to   { rotate: 1.8deg; }
+}
+
+/* ===== Arañitas colgando ===== */
+.arana {
+  position: fixed;
+  top: 0;
+  left: var(--x);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  pointer-events: none;
+  animation:
+    colgar 1.6s cubic-bezier(.3, 1.4, .5, 1) var(--d) both,
+    balancear 3.2s ease-in-out calc(var(--d) + 1.6s) infinite alternate;
+}
+.arana i { width: 2px; height: var(--largo); background: rgba(255,255,255,.85); }
+.arana b { font-size: 1.9rem; font-weight: 400; line-height: 1; margin-top: -4px; }
+
+@keyframes colgar    { from { transform: translateY(-110%); } to { transform: translateY(0); } }
+@keyframes balancear { from { rotate: -7deg; } to { rotate: 7deg; } }
+
+/* ===== Viñeta central estilo cómic ===== */
+.vineta {
+  position: relative;
+  z-index: 2;
+  width: min(92vw, 520px);
+  padding: 34px 26px 30px;
+  text-align: center;
+  background: var(--blanco);
+  color: var(--negro);
+  border: 6px solid var(--negro);
+  box-shadow: 12px 12px 0 var(--negro);
+  transform: rotate(-1.5deg);
+  animation:
+    caer 0.8s cubic-bezier(.2, 1.4, .4, 1) both,
+    flotar 5s ease-in-out .8s infinite alternate;
+}
+@keyframes caer {
+  from { transform: translateY(-120%) rotate(-1.5deg); }
+  to   { transform: translateY(0) rotate(-1.5deg); }
+}
+@keyframes flotar {
+  from { translate: 0 0; }
+  to   { translate: 0 -8px; }
+}
+
+.hilo {
+  position: absolute;
+  top: -100vh;
+  left: 50%;
+  width: 3px;
+  height: calc(100vh + 6px);
+  background: var(--blanco);
+  transform: translateX(-50%);
+}
+
+h1 {
+  font-size: clamp(2.2rem, 10.5vw, 3.6rem);
+  line-height: 1;
+  font-weight: 400;
+  color: var(--rojo);
+  text-shadow: 3px 3px 0 var(--azul), 5px 5px 0 var(--negro);
+}
+/* cada letra hace una ola */
+h1 span {
+  display: inline-block;
+  animation: ola 3.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * .07s);
+}
+@keyframes ola {
+  0%, 55%, 100% { translate: 0 0; }
+  25%           { translate: 0 -9px; }
+}
+
+.sub {
+  margin: 10px 0 24px;
+  font-size: 1.25rem;
+  color: var(--azul);
+}
+
+/* ===== Botones ===== */
+.botones { display: grid; gap: 16px; }
+
+.btn {
+  display: block;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 1.35rem;
+  letter-spacing: 1px;
+  color: var(--blanco);
+  background: var(--rojo);
+  border: 4px solid var(--negro);
+  box-shadow: 5px 5px 0 var(--negro);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover, .btn:focus-visible {
+  transform: translate(-2px, -3px) rotate(-1deg);
+  box-shadow: 8px 8px 0 var(--negro);
+  outline: none;
+}
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--negro); }
+.btn.azul  { background: var(--azul); }
+.btn.negro { background: var(--negro); }
+
+.shake { animation: temblar .4s; }
+@keyframes temblar {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px) rotate(-2deg); }
+  40% { transform: translateX(8px) rotate(2deg); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* Onomatopeyas que salen al hacer clic (¡THWIP!) */
+.onoma {
+  position: fixed;
+  z-index: 60;
+  translate: -50% -50%;
+  font-size: 2.2rem;
+  color: #ffdd00;
+  text-shadow: 3px 3px 0 var(--rojo), -2px -2px 0 var(--negro), 2px 2px 0 var(--negro);
+  pointer-events: none;
+  animation: onoma .9s ease-out forwards;
+}
+@keyframes onoma {
+  0%   { transform: scale(.2) rotate(-15deg); opacity: 0; }
+  20%  { transform: scale(1.4) rotate(6deg);  opacity: 1; }
+  100% { transform: scale(1) translateY(-50px) rotate(-4deg); opacity: 0; }
+}
+
+/* ===== Panel de mensajes ===== */
+.panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  place-items: center;
+  padding: 18px;
+  overflow: hidden;
+  background: rgba(10, 10, 18, .9);
+}
+.panel.abierto { display: grid; animation: aparecer .35s ease-out; }
+@keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+
+/* rayos de cómic que giran detrás del mensaje */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: repeating-conic-gradient(rgba(226,54,54,.38) 0 9deg, rgba(43,55,132,.38) 9deg 18deg);
+  animation: girar 40s linear infinite;
+}
+.panel[data-modo="no"]::before {
+  background: repeating-conic-gradient(rgba(226,54,54,.55) 0 9deg, rgba(0,0,0,.5) 9deg 18deg);
+  animation-duration: 12s;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+
+.panel .web { width: min(65vw, 400px); height: min(65vw, 400px); stroke: rgba(255,255,255,.75); }
+.panel[data-modo="corazones"] .web { display: none; }
+
+/* telaraña gigante del botón 1 */
+.tela-centro {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(98vmin, 640px);
+  height: min(98vmin, 640px);
+  stroke-width: 1.1;
+}
+.panel[data-modo="telarana"] .tela-centro {
+  display: block;
+  animation: tejer 2.6s ease-out both, respirar 3s ease-in-out 2.6s infinite alternate;
+}
+@keyframes respirar { from { scale: .97; } to { scale: 1.04; } }
+
+.mensaje {
+  position: relative;
+  z-index: 2;
+  width: min(92vw, 480px);
+  padding: 30px 24px 26px;
+  text-align: center;
+  background: var(--blanco);
+  color: var(--negro);
+  border: 6px solid var(--negro);
+  box-shadow: 10px 10px 0 var(--rojo);
+  animation: pop .5s cubic-bezier(.2, 1.6, .4, 1) both;
+}
+@keyframes pop { from { transform: scale(.3) rotate(-8deg); } to { transform: scale(1) rotate(0); } }
+
+.mensaje h2 {
+  font-size: 2.1rem;
+  font-weight: 400;
+  color: var(--rojo);
+  text-shadow: 2px 2px 0 var(--azul);
+  margin-bottom: 12px;
+}
+.mensaje p {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  letter-spacing: 0;
+}
+.mensaje .btn { display: inline-block; font-size: 1.15rem; padding: 10px 18px; }
+
+/* ===== Corazones que suben ===== */
+.corazones { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.panel:not([data-modo="corazones"]) .corazones { display: none; }
+
+.corazon {
+  position: absolute;
+  bottom: -60px;
+  font-size: 2rem;
+  color: var(--rojo);
+  text-shadow: 2px 2px 0 var(--negro);
+  opacity: 0;
+  animation: subir 4.5s linear infinite, vaiven 1s ease-in-out infinite alternate;
+}
+@keyframes subir {
+  0%   { transform: translateY(0) scale(.6); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-110vh) scale(1.3) rotate(18deg); opacity: 0; }
+}
+@keyframes vaiven {
+  from { translate: -14px 0; }
+  to   { translate: 14px 0; }
+}
+
+/* ===== Alarma roja al intentar terminar ===== */
+.alarma {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  place-items: center;
+  padding: 20px;
+}
+.alarma.activa { display: grid; }
+
+.alarma::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #ff2b2b 0%, #b00000 60%, #4a0000 100%);
+  box-shadow: inset 0 0 140px 50px #000;
+  animation: parpadeo .3s ease-in-out infinite alternate;
+}
+.alarma.nivel2::before { animation-duration: .13s; }
+@keyframes parpadeo { from { opacity: 1; } to { opacity: .55; } }
+
+.alarma p {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: clamp(2.2rem, 10vw, 5.5rem);
+  line-height: 1.05;
+  color: var(--blanco);
+  text-shadow: 4px 4px 0 #000, -2px -2px 0 #000;
+  letter-spacing: 2px;
+}
+.alarma p span {
+  display: inline-block;
+  animation: entrar .35s ease-out backwards, tiembla .09s linear infinite alternate;
+  animation-delay: var(--d), 0s;
+}
+@keyframes entrar  { from { scale: 3; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes tiembla {
+  from { transform: translate(-2px, 1px) rotate(var(--r)); }
+  to   { transform: translate(2px, -2px) rotate(calc(var(--r) * -1)); }
+}
+
+/* mientras suena la alarma, el título y los botones se ponen rojos y tiemblan */
+.temblor h1 { color: #ff0000; animation: temblar .12s linear infinite; }
+.temblor .botones { animation: temblar .12s linear infinite; }
+
+/* ===== Sin animaciones si el usuario lo pide ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .corazon { opacity: 1; bottom: 20%; }
+}
